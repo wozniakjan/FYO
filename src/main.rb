@@ -1,4 +1,4 @@
-require 'green_shoes'
+#require 'shoes'
 
 
 Shoes.app ({:width=>400, :height=>150, :title=>"FYO2013"}) do
