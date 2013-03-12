@@ -1,3 +1,9 @@
+#Shoes.setup do
+#    gem 'chunky_png'
+#end
+#
+#load 'image_parsing.rb'
+
 @@width = 900
 @@height = 500
 
@@ -16,7 +22,9 @@ Shoes.app :title=>"FYO2013", :width=>@@width+2, :height=>@@height+2 do
         end
         @open_button.click do
             file = ask_open_file
-            main_print_msg(file)
+            display_image(file, @src)
+            display_image(file, @dst)
+            display_image(file, @flt)
         end
 
         @filter_button = stack :width=>(@win_w/3), :height=>25 do
@@ -41,6 +49,8 @@ Shoes.app :title=>"FYO2013", :width=>@@width+2, :height=>@@height+2 do
         @src = stack :width=>@widget_w, :height=>@widget_h do
             background brown
             border white, :strokewidth=>3
+            @src_image = image :hidden=>true do
+            end
         end
 
         @flt = stack :width=>20, :height=>@widget_h do
@@ -49,43 +59,14 @@ Shoes.app :title=>"FYO2013", :width=>@@width+2, :height=>@@height+2 do
         end
         @flt.click do
             return if @flt_lock
-            size = @win_w/2 - 10
-            coef = 10
-            diff = (size/2-30)/coef
-    
-#            para "1 src:#{@src.width} dst:#{@dst.width} flt:#{@flt.width}\n" 
 
-#            @flt_lock = true
+            @flt_lock = true
             if(@flt.width < 30)
-#                @a = animate (100) { |i|
-#                    x = 1
-#                    @dst.width -= coef
-#                    @src.width -= coef 
-#                    @flt.width += coef*2
-#                    if i>diff
-#                        @a.stop
-#                        @flt_lock = false
-#                    end
-#                    para "src:#{@src.width} dst:#{@dst.width} flt:#{@flt.width}\n" 
-#                }
-                @src.width = 230
-                @dst.width = 230
-                @flt.width = 440
+                extend_filter_area()
             else
-#                @a = animate (100) { |i|
-#                    x = 1
-#                    @dst.width += coef
-#                    @src.width += coef
-#                    @flt.width -= coef*2
-#                    if i>diff
-#                        @a.stop
-#                        @flt_lock = false
-#                    end
-#                }
-                @src.width = 440
-                @dst.width = 440
-                @flt.width = 20
+                shrink_filter_area()
             end
+            @flt_lock = false
         end
 
         @dst = stack :width=>@widget_w, :height=>@widget_h do
@@ -99,8 +80,50 @@ Shoes.app :title=>"FYO2013", :width=>@@width+2, :height=>@@height+2 do
 #    end
 #    @error_console.height = 0
 #
-#    def main_print_msg(msg)
-#        @t1.text = msg 
-#    end
+    def display_image(file, widget)
+        widget.clear { 
+            image file 
+            border white, :strokewidth=>3
+        }
+    end
+
+    def extend_filter_area()
+        size = @win_w/2 - 10
+        coef = 10
+        diff = (size/2-30)/coef
+#       @a = animate (100) { |i|
+#           x = 1
+#           @dst.width -= coef
+#           @src.width -= coef 
+#           @flt.width += coef*2
+#           if i>diff
+#               @a.stop
+#               @flt_lock = false
+#           end
+#           para "src:#{@src.width} dst:#{@dst.width} flt:#{@flt.width}\n" 
+#       }
+        @src.width = 230
+        @dst.width = 230
+        @flt.width = 440
+    end
+
+    def shrink_filter_area()
+        size = @win_w/2 - 10
+        coef = 10
+        diff = (size/2-30)/coef
+#       @a = animate (100) { |i|
+#           x = 1
+#           @dst.width += coef
+#           @src.width += coef
+#           @flt.width -= coef*2
+#           if i>diff
+#               @a.stop
+#               @flt_lock = false
+#           end
+#       }
+        @src.width = 440
+        @dst.width = 440
+        @flt.width = 20
+    end
 end
 
