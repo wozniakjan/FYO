@@ -20,11 +20,11 @@ class Win(QtGui.QMainWindow):
 
 
     def initWin(self):
-        self.win_w = 900
+        self.win_w = 1050
         self.win_h = 500
-        self.pic_s = 400
+        self.pic_s = 500
 
-        self.setGeometry(300, 300, self.win_w, self.win_h)
+        self.setGeometry(150, 150, self.win_w, self.win_h)
         self.setWindowTitle('FYO2013')
 
 
@@ -39,33 +39,64 @@ class Win(QtGui.QMainWindow):
         exitAction.setStatusTip('Exit application')
         exitAction.triggered.connect(QtGui.qApp.quit)
 
+        highPassFilterAction = QtGui.QAction('&High-Pass Filter', self)
+        highPassFilterAction.setCheckable(True)
+        lowPassFilterAction = QtGui.QAction('&Low-Pass Filter', self)
+        lowPassFilterAction.setCheckable(True)
+        customFilterAction = QtGui.QAction('&Custom Filter',self)
+        customFilterAction.setCheckable(True)
+
+        predefinedFilterMenu = QtGui.QMenu('&Active', self)
+        predefinedFilterMenu.addAction(lowPassFilterAction)
+        predefinedFilterMenu.addAction(highPassFilterAction)
+        predefinedFilterMenu.addAction(customFilterAction)
+        createFilterAction = QtGui.QAction('&Create new', self)
+        createFilterAction.triggered.connect(self.addFilter)
+
         self.statusBar()
 
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(openAction)
         fileMenu.addAction(exitAction)
+        filterMenu = menubar.addMenu('&Filter')
+        filterMenu.addMenu(predefinedFilterMenu)
+        filterMenu.addAction(createFilterAction)
 
 
     def initPicArea(self):
         picsWidget = QtGui.QWidget(self)
-        picsWidget.setFixedSize(self.pic_s, self.pic_s)
+        picsWidget.setFixedSize(self.pic_s*2, self.pic_s)
+        picsLayout = QtGui.QHBoxLayout()
+        picsWidget.setLayout(picsLayout)
         self.setCentralWidget(picsWidget)
-        src_pic = QtGui.QPixmap('img\lena.png')
-        src = QtGui.QLabel(picsWidget)
-        src.setPixmap(src_pic)
-        src.setFixedSize(src_pic.size())
 
-
+        self.src = QtGui.QLabel(picsWidget)
+        picsLayout.addWidget(self.src)
+        self.dst = QtGui.QLabel(picsWidget)
+        picsLayout.addWidget(self.dst)
 
 
     def showDialog(self):
-        fname = QtGui.QFileDialog.getOpenFileName(self, 'Open file', '/home')
+        fname = QtGui.QFileDialog.getOpenFileName(self, 'Open file', '.')
         if (fname):
-            f = open(fname, 'r')
-            with f:
-                data = f.read()
-                print (data)
+            self.openPicture(fname)
+
+    def openPicture(self, pic_file):
+        src_pic = QtGui.QPixmap(pic_file)
+        self.src.setPixmap(src_pic)
+        self.src.setFixedSize(src_pic.size())
+        dst_pic = QtGui.QPixmap(pic_file)
+        self.dst.setPixmap(dst_pic)
+        self.dst.setFixedSize(dst_pic.size())
+
+
+    def addFilter(self):
+        print ("add filter")
+
+
+    def removeFilter(self):
+        print ("remove filter")
 
 
 ################################################################################
