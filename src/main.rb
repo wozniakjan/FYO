@@ -1,9 +1,3 @@
-#Shoes.setup do
-#    gem 'chunky_png'
-#end
-#
-#load 'image_parsing.rb'
-
 @@width = 900
 @@height = 500
 
@@ -33,6 +27,7 @@ Shoes.app :title=>"FYO2013", :width=>@@width+2, :height=>@@height+2 do
             para "filter", :align=>'center', :stroke=>white
         end
         @filter_button.click do
+            system ''
         end
 
         @exit_button = stack :width=>(@win_w/3), :height=>25 do
