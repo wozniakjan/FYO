@@ -2,8 +2,9 @@
 #                                                                              #
 ################################################################################
 
-import sys
+import sys, numpy
 from PyQt4 import QtGui
+from PIL import Image
 
 
 ################################################################################
@@ -20,9 +21,9 @@ class Win(QtGui.QMainWindow):
 
 
     def initWin(self):
-        self.win_w = 1050
-        self.win_h = 500
-        self.pic_s = 500
+        self.win_w = 640
+        self.win_h = 640
+        self.pic_s = 300
 
         self.setGeometry(150, 150, self.win_w, self.win_h)
         self.setWindowTitle('FYO2013')
@@ -66,16 +67,32 @@ class Win(QtGui.QMainWindow):
 
     def initPicArea(self):
         picsWidget = QtGui.QWidget(self)
-        picsWidget.setFixedSize(self.pic_s*2, self.pic_s)
-        picsLayout = QtGui.QHBoxLayout()
-        picsWidget.setLayout(picsLayout)
-        self.setCentralWidget(picsWidget)
+        picsWidget.setFixedSize(self.pic_s*2+50, self.pic_s*2+50)
+        picsLayout = QtGui.QGridLayout()
 
         self.src = QtGui.QLabel(picsWidget)
-        picsLayout.addWidget(self.src)
+        self.src.setFixedSize(self.pic_s,self.pic_s)
+        picsLayout.addWidget(self.src, 1, 0)
+        picsLayout.addWidget(QtGui.QLabel('Source picture'), 0, 0)
         self.dst = QtGui.QLabel(picsWidget)
-        picsLayout.addWidget(self.dst)
+        self.dst.setFixedSize(self.pic_s,self.pic_s)
+        picsLayout.addWidget(self.dst, 1, 1)
+        picsLayout.addWidget(QtGui.QLabel('Filtered picture'), 0, 1)
 
+        self.flt = QtGui.QLabel(picsWidget)
+        self.flt.setFixedSize(self.pic_s,self.pic_s)
+        picsLayout.addWidget(self.flt, 3, 0)
+        picsLayout.addWidget(QtGui.QLabel('Filter picture'), 2, 0)
+        self.fft = QtGui.QLabel(picsWidget)
+        self.fft.setFixedSize(self.pic_s,self.pic_s)
+        picsLayout.addWidget(self.fft, 3, 1)
+        picsLayout.addWidget(QtGui.QLabel('Fourier transform picture'), 2, 1)
+
+        picsWidget.setLayout(picsLayout)
+        picsLayout.setColumnStretch(0,1)
+        picsLayout.setRowStretch(1,1)
+        picsLayout.setRowStretch(3,1)
+        self.setCentralWidget(picsWidget)
 
     def showDialog(self):
         fname = QtGui.QFileDialog.getOpenFileName(self, 'Open file', '.')
@@ -84,12 +101,36 @@ class Win(QtGui.QMainWindow):
 
     def openPicture(self, pic_file):
         src_pic = QtGui.QPixmap(pic_file)
-        self.src.setPixmap(src_pic)
-        self.src.setFixedSize(src_pic.size())
-        dst_pic = QtGui.QPixmap(pic_file)
-        self.dst.setPixmap(dst_pic)
-        self.dst.setFixedSize(dst_pic.size())
+        self.src.setPixmap(src_pic.scaled(self.pic_s, self.pic_s))
 
+#        i = Image.open(pic_file)
+#        j = numpy.fft.fft2(i)
+#        imshow(real(j))
+
+        i = Image.open(pic_file)
+        i = i.convert('L')
+        i = numpy.asarray(i)
+        i_fft = numpy.fft.fftshift(numpy.fft.fft2(i))
+        i_fft2 = abs(numpy.real(i_fft))
+
+        for i in range(0,512):
+            for j in range(0,512):
+                i_fft2[i][j] /= 100
+                if i_fft2[i][j] > 255:
+                    i_fft2[i][j] = 255
+
+
+        i_ifft = numpy.fft.ifft2(numpy.fft.ifftshift(i_fft))
+
+        Image.fromarray(numpy.uint8(i_fft2)).save("img/fft_temp.png")
+        fft_pic = QtGui.QPixmap('img/fft_temp.png')
+        self.fft.setPixmap(fft_pic.scaled(self.pic_s, self.pic_s))
+        self.fft.setFixedSize(self.pic_s,self.pic_s)
+
+        Image.fromarray(numpy.uint8(numpy.real(i_ifft))).save("img/ifft_temp.png")
+        ifft_pic = QtGui.QPixmap('img/ifft_temp.png')
+        self.dst.setPixmap(ifft_pic.scaled(self.pic_s, self.pic_s))
+        self.dst.setFixedSize(self.pic_s,self.pic_s)
 
     def addFilter(self):
         print ("add filter")
