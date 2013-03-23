@@ -143,18 +143,23 @@ class Win(QMainWindow):
     
     def setFilter(self):
         if self.im_fft != "null":
-            x = self.im_fft.size
-            y = int(self.im_fft.size/x)
-            filters = len(self.filterAction)
-            text = "filters:"
-            for i in range(0,filters):
-                if self.filterAction[i].isChecked(): 
-                    text += " " + self.filterAction[i].text()
-                self.filter.setText(text)
-        self.filterSpectrum()
+#            filters = len(self.filterAction)
+#            text = "filters:"
+#            for i in range(0,filters):
+#                if self.filterAction[i].isChecked(): 
+#                    text += " " + self.filterAction[i].text()
+#                self.filter.setText(text) 
+            self.sumFilter()   
+            self.filterSpectrum()
             
     def filterSpectrum(self):
         im_fft2 = self.im_fft
+        x = self.im_fft[0].size
+        y = int(self.im_fft.size/x)
+        for i in range(0,y-1):
+            for j in range(0,x-1):
+                im_fft2[i][j] = self.im_fft[i][j]*self.sumfilter[i][j]
+                
         im_fft2_view = self.count_fft_view(im_fft2, 100)
         im_ifft = numpy.fft.ifft2(numpy.fft.ifftshift(im_fft2))
         Image.fromarray(numpy.uint8(im_fft2_view)).save("img/fft2_temp.png")
@@ -165,7 +170,36 @@ class Win(QMainWindow):
         ifft_pic = QPixmap('img/ifft_temp.png')
         self.dst.setPixmap(ifft_pic.scaled(self.pic_s, self.pic_s))
         self.dst.setFixedSize(self.pic_s,self.pic_s)
+        self.viewFilter()
+
         
+    def sumFilter(self):
+        x = self.im_fft[0].size
+        y = int(self.im_fft.size/x)
+        self.sumfilter = numpy.ndarray(shape=(x,y), dtype=float)
+        mid_x = x/2
+        mid_y = y/2
+        s = 10
+        for i in range(0,y):
+            for j in range(0,x):
+                self.sumfilter[i][j] = 1
+                if (i>(mid_y-s))&(i<(mid_y+s))&(j>(mid_x-s))&(j<(mid_x+s)):
+                    self.sumfilter[i][j] = 0    
+    
+    def viewFilter(self):
+        x = self.im_fft[0].size
+        y = int(self.im_fft.size/x)
+        sumfilter_pic2 = numpy.ndarray(shape=(x,y), dtype=float)
+        mid_x = x/2
+        mid_y = y/2
+        s = 10
+        for i in range(0,y):
+            for j in range(0,x):
+                sumfilter_pic2[i][j] = self.sumfilter[i][j] * 255
+        Image.fromarray(numpy.uint8(sumfilter_pic2)).save("img/sumfiltr.png")
+        sumfiltr_pic = QPixmap('img/sumfiltr.png')
+        self.filter.setPixmap(sumfiltr_pic.scaled(self.pic_s, self.pic_s))
+        self.filter.setFixedSize(self.pic_s,self.pic_s)    
 
     def addFilter(self):
         print ("add filter")
