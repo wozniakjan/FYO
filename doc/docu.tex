@@ -65,11 +65,63 @@ obrazu z prostorové domény do domény frekvenční. Této konverze lze docíli
 díky matematickým vztahům ale analogickými postupy i s využitím fyzikálních zákonů a čočky.
 
 \subsection{Historie}
+Jean Baptiste Joseph Fourier objevil, že libovolná funkce může být rozložena v řadu 
+harmonických funkcí o různých frekvencích a komplexních amplitudách, což se považuje za základ 
+pro Fourierovskou optiku a harmonickou analýzu signálů.
+
+Velmi přinosná pro aplikaci Fourierovy transformace byla práce pánů J. W. Cooleye a J. W. Tukeye,
+kteří publikovali výrazné zefektivnění výpočtu diskrétní transformace zvané rychlá Fourierova
+transformace. Tento algoritmus je dodnes nejpoužívanější variantou výpočtu transformace.
+
+\section{Fyzikální princip}
+Fourierovská optika, popisuje šíření světla Fourierovou analýzou. Velmi zjednodušené vysvětlení by
+se dalo definovat tak, že libovolnou vlnu ve volném prostoru je možně chápat jako superpozici rovinných 
+vln. To znamená, je-li libovolná monochromatická 
+vlna o vlnové délce $\lambda$ a komplexní amplitudě dané funkcí $f(x,y)$ složena z harmonických 
+složek, pak každá harmonická složka odpovídá rovinné vlně. Každá rovinná vlna se šíří pod úhly 
+$\theta x = sin^{-1}(\lambda v_x)$, $\theta y = sin^{-1}(\lambda v_y)$ a odpovídá složce s prostorovými 
+frekvencemi $v_x$, $v_y$  a její amplituda je $F(v_x, v_y)$ což je Fourierova transformace funkce
+$f(x,y)$.
+
+S využitím čočky, která zaostří rovinne vlny rovinne vlny sdružené s harmonickýmí Fourierovými komponentami
+vstupní funkce $f(x,y)$ do bodů $(\lambda v_x, \lambda v_y)$ v ohniskové rovině, můžeme jednotlivé
+komponenty světla zpracovávat individuálně. To znamená, že rozložení světla v zadní ohniskové 
+rovině čočky je úměrné Fourierově transformaci rozložení světla v přední ohniskové rovině.
+
+Demonstraci Fourierovy transformace v optice je možné fyzikálně provést pomocí difrakce. Na základě
+Fresnelovy difrakce jsme teoreticky schopni dojít až k Fourierove transformaci. Tato difrakce je totiž
+charakteristická tim, že v různě vzdálených rovinách pozorování lze sledovat různé difrakční obrazce. V jednom
+teoretickém případu, je-li vzdálenost mezi objektem a stínítkem nekonečná, je vzniklý Fresnelův difrakční 
+obrazec totožný s Fraunhoferovým difrakčním obrazcem daného objektu. S použitím optických pomůcek
+jsme schopni vytvořit Fraunhoferův difrakční i v reálnějším schématu než-li v nekonečné vzdálenosti.
+
+\subsection{Fraunhoferova difrakce}
+Fraunhoferovu difrakci prakticky nemůžeme sledovat bez použití optiky (např. spojné čočky), proto není tolik
+názorná jako Fresnelova difrakce. Poskytuje nám však informace o úhlovém rozložení difraktované intenzity 
+(rovina pozorování Fraunhoferovy difrakce je v nekonečnu a jednotlivým bodům roviny v nekonečnu odpovídají směry). 
+Vyjdeme-li z paprskové optiky, víme, že směrům v předmětovém prostoru odpovídají obrazové 
+body v ohniskové rovině čočky. Z toho tedy vyplývá, že můžeme Fraunhoferovu difrakci pozorovat, 
+vložíme-li za difraktující objekt čočku. Je ovšem třeba, aby na překážku dopadal rovnoběžný svazek světla.
+
+Franhoferova difrakce hraje zásadní úlohu právě v zobrazovacích soustavách. Každá taková soustava
+se skládá ze dvou rovin
+
+\begin{itemize}
+\item \textbf{rovina s Franhouferovou difrakcí} -- primární obraz
+\item \textbf{rovina obrazová} -- sekundární obraz
+\end{itemize} 
 
 
+K popisu sekundárního obrazu, Fraunhoferova obrazce a jejich vzájemného vztahu se používá tzv. 
+Fourierova analýza a matematický aparát nazývaný Fourierovou transformací. 
+Stejně jako je možné z obrazu získat pomocí Fourierovy transformace spektrum a ze spektra poté
+inverzní Fourierovou transformací opět obraz věrný předloze, je možno zpětně převézt z Fraunhoferova 
+difrakčního obrazce opět na obraz.
+Zásahem do tohoto Fraunhoferova difrakčního obrazce (např. zacloněním 
+některých jeho částí) lze potom snadno ovlivnit výsledný sekundární obraz. Tento se pak může 
+velmi výrazně lišit od věrného obrazové předlohy -- objektu. 
 
-\section{Fyzikální principy}
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
 \includegraphics[width=11cm]{images/ft-cocka.png}
 \caption{Optické zobrazování z hlediska Fourierovy transformace.}
@@ -89,7 +141,20 @@ F[k,l] = \sum_{m=0}^{N}{\sum_{n=0}^{N}{f[m,n]e^{(-i)\frac{2\pi km}{N}}\cdot e^{(
 \end{equation}
 
 Kde $N$ jsou rozměry obrazu v pixelech, tedy $N^2$ dává celkový počet pixelů, a hodnoty $k$ a $l$ 
-jsou diskrétní pozice v obrazu. 
+jsou diskrétní pozice v obrazu. Fourierova transformace pracuje s hodnotami intenzit vstupního obrazu
+proto je nutné v případě barevného obrázku převézt z barevného modelu do hodnot odstínu šedé. Experimentálně
+stanovena byla pro převod z RGB modelu rovnice \ref{rgb}
+
+\begin{equation}
+Y = 0.299*R + 0.587*G + 0.114*B
+\label{rgb}
+\end{equation}
+
+Převod se počítá pro každý pixel obrazu, kde $Y$ je výsledná jasová hodnota na dané pozici v obraze,
+$R$, $G$ a $B$ jsou hodnoty intenzity v jednotlivých kanálech barevného modelu a konstanty násobící
+kanálové složky jsou předem vhodně stanoveny aby odpovídaly skutečnému obrazovému vjemu.
+Výsledkem Fourierovy transformace je obraz stejné velikosti jako byl vstupní, ale místo hodnoty jasu
+je komplexní číslo.
 
 Neboť velmi častou aplikací pro Fourierovu transformaci je frekvenční filtrace, je vhodné uvést vztah 
 pro konvoluci.
@@ -101,10 +166,10 @@ g[m,n] = \sum_{k=0}^{N}{\sum_{l=0}^{N}{f[k,l]\cdot h[m-k, n-l]}}
 
 \section{Aplikace}
 Mimo zpracování obrazu je Fourierova transformace používaná v mnoha dalších oblastech jako například
-řešení parciálních diferenciálních rovnic, rychlé násobení dvou velkých čísel. Nejlépe lze pozorovat
+řešení parciálních diferenciálních rovnic, rychlé násobení dvou velkých čísel. Výrazně lze pozorovat
 důležitost Fourierovy transformace na faktu, že v dnešní době velká řada moderních DSP procesorů obsahuje
 instrukce pro optimalizaci výpočtů rychlé Fourierovy transformace a zároveň existuje široké spektrum
-paralelních implementací urychlujících tento výpočet pomocí SIMD instrukční sady na běžných CPU.
+paralelních implementací, urychlujících tento výpočet pomocí SIMD instrukční sady na běžných CPU.
 
 \subsection{Analýza složitosti}
 Pro ideální využití Fourierovy transformace je vhodné znát i složitost výpočtu. Aby bylo  možné se
@@ -129,6 +194,10 @@ tedy patrné, že časová složitost aplikace filtru ve frekvenční oblasti je
 filtru v prostorové oblasti. 
 
 \subsection{Využití}
+Fyzikální využití Franhouferovy difrakce je velmi široké, používá se například k analýze snímků z elektronového 
+mikroskopu a snímků rozptylu částic (posouzení kvality zaostření, zjištění rozlišení, identifikace astigmatismu 
+\dots), ke kontinuální kontrole tloušťky vláken a drátů a ke korekci zobrazovaní v optických soustavách. 
+
 V oblasti počítačového vidění patří mezi jedny z nejpoužívanějších a nejrobustnějších obrazových příznaků 
 Gaborův filter, který se skládá z banky několika Gáborových vlnek o různé magnitudě a orientaci, kde všechny
 vlny lze generovat z bázové vlnky pomocí operací dilatace a rotace. Princip, jak tento filter funguje je velmi 
