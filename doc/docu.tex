@@ -1,9 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 
-%\input{config}
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{times}
 \usepackage{url}
 \usepackage[textwidth=15.2cm,textheight=23cm]{geometry}
 \usepackage{xcolor}
@@ -12,8 +10,8 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{multirow}
-\usepackage{amssymb}
-
+\usepackage[IL2]{fontenc}
+    \usepackage{siunitx}
 \usepackage[bf]{caption}
 
 \pdfcompresslevel=9
@@ -103,6 +101,13 @@ Vyjdeme-li z paprskové optiky, víme, že směrům v předmětovém prostoru od
 body v ohniskové rovině čočky. Z toho tedy vyplývá, že můžeme Fraunhoferovu difrakci pozorovat, 
 vložíme-li za difraktující objekt čočku. Je ovšem třeba, aby na překážku dopadal rovnoběžný svazek světla.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{images/ft-cocka.png}
+\caption{Optické zobrazování z hlediska Fourierovy transformace.}
+\label{Fraunhofer}
+\end{figure}
+
 Franhoferova difrakce hraje zásadní úlohu právě v zobrazovacích soustavách. Každá taková soustava
 se skládá ze dvou rovin
 
@@ -110,7 +115,6 @@ se skládá ze dvou rovin
 \item \textbf{rovina s Franhouferovou difrakcí} -- primární obraz
 \item \textbf{rovina obrazová} -- sekundární obraz
 \end{itemize} 
-
 
 K popisu sekundárního obrazu, Fraunhoferova obrazce a jejich vzájemného vztahu se používá tzv. 
 Fourierova analýza a matematický aparát nazývaný Fourierovou transformací. 
@@ -121,12 +125,36 @@ Zásahem do tohoto Fraunhoferova difrakčního obrazce (např. zacloněním
 některých jeho částí) lze potom snadno ovlivnit výsledný sekundární obraz. Tento se pak může 
 velmi výrazně lišit od věrného obrazové předlohy -- objektu. 
 
+\subsection{Prostorový filtr}
+Slouží k odstranění vad zhoršující vnitřní strukturu svazku. Jde o difrakční a interferenční jevy,
+které zapříčiňují lokální změny intenzity svazku. Tyto jevy mohou vznikat na pevných
+částečkách ulpěných na povrchu optických prvků, bublinkách a mechanických poruchách ve skle
+atd. Poruchy v obraze způsobené popisovanými jevy jsou reprezentovány vysokými
+prostorovými frekvencemi (ve Fourierově rovině body vzdálenějšími od osy roviny). Užitím
+výše popsaného dolnopropustního filtru dojde k jejich potlačení.
+Velikosti dírkových clon (angl. pin hole) se pohybují v řádech desítek $\micro m$ a jejich nejvhodnější
+kombinace s určitým objektivem resp. mikroobjektivem je dána víceméně experimentálně. Je-li
+clonka příliš malá, nelze se zbavit soustavy interferenčních proužků kolem stopy a je-li clonka
+příliš velká, bude filtrace neúčinná.
+
+Nyní uvažujme dvoučočkový zobrazovací systém zobrazený na obrazku \ref{obr1}. Ten se nazývá 
+systém 4-f, souží jako zaostřený zobrazovací systém. Je možné si ho představit jako kaskádu dvou
+subsystémů realizujících Fourierovu transformaci. Mezi předmětovou a Fourierovou rovinou je
+provedena přímá Fourierova transformace a mezi Fourierovou a obrazovou rovinou inverzní
+Fourierova transformace. Výsledkem zobrazení je obraz přesně korespondující s objektem.
+
 \begin{figure}[H]
 \centering
-\includegraphics[width=11cm]{images/ft-cocka.png}
-\caption{Optické zobrazování z hlediska Fourierovy transformace.}
+\includegraphics[width=14cm]{images/ft-cocka.png}
+\caption{Prostorová filtrace.}
 \label{lcpstack}
 \end{figure}
+
+Tento 4-f systém lze použít pro prostorovou filtraci, když si uvědomíme, že ve Fourierově rovině
+jsou oddělené jednotlivé Fourierovy složky a každému bodu tak odpovídá jedna příslušná
+prostorová frekvence. Použitím vhodné masky je možné selektivně ovlivnit jejich výběr –
+některé blokovat, jiné propustit.
+
 
 
 
@@ -156,13 +184,20 @@ kanálové složky jsou předem vhodně stanoveny aby odpovídaly skutečnému o
 Výsledkem Fourierovy transformace je obraz stejné velikosti jako byl vstupní, ale místo hodnoty jasu
 je komplexní číslo.
 
-Neboť velmi častou aplikací pro Fourierovu transformaci je frekvenční filtrace, je vhodné uvést vztah 
-pro konvoluci.
+Neboť velmi častou aplikací pro Fourierovu transformaci je prostorová filtrace, je vhodné uvést vztah 
+pro konvoluci. Dále budou vztahy pro Fourierovu transformaci a konvoluci porovnávány z hlediska 
+časové složitosti.
 \begin{equation}
 g[m,n] = \sum_{k=0}^{N}{\sum_{l=0}^{N}{f[k,l]\cdot h[m-k, n-l]}}
 \label{konvoluce}
 \end{equation}
 
+\subsection{Spektrum}
+-- popsat jak vypada spektrum
+
+-- centrovani spektra
+
+-- par obrazku spekter
 
 \section{Aplikace}
 Mimo zpracování obrazu je Fourierova transformace používaná v mnoha dalších oblastech jako například
