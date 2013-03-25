@@ -11,7 +11,7 @@
 \usepackage{float}
 \usepackage{multirow}
 \usepackage[IL2]{fontenc}
-    \usepackage{siunitx}
+\usepackage{siunitx}
 \usepackage[bf]{caption}
 
 \pdfcompresslevel=9
@@ -132,7 +132,7 @@ které zapříčiňují lokální změny intenzity svazku. Tyto jevy mohou vznik
 atd. Poruchy v obraze způsobené popisovanými jevy jsou reprezentovány vysokými
 prostorovými frekvencemi (ve Fourierově rovině body vzdálenějšími od osy roviny). Užitím
 výše popsaného dolnopropustního filtru dojde k jejich potlačení.
-Velikosti dírkových clon (angl. pin hole) se pohybují v řádech desítek $\micro m$ a jejich nejvhodnější
+Velikosti dírkových clon (angl. pin hole) se pohybují v řádech desítek $\si{\micro} m$ a jejich nejvhodnější
 kombinace s určitým objektivem resp. mikroobjektivem je dána víceméně experimentálně. Je-li
 clonka příliš malá, nelze se zbavit soustavy interferenčních proužků kolem stopy a je-li clonka
 příliš velká, bude filtrace neúčinná.
@@ -193,9 +193,12 @@ g[m,n] = \sum_{k=0}^{N}{\sum_{l=0}^{N}{f[k,l]\cdot h[m-k, n-l]}}
 \end{equation}
 
 \subsection{Spektrum}
--- popsat jak vypada spektrum
+Zobrazovaná funkce po provedení Fourierovy transformace se nazývá spektrum.  Toto spektrum má z hlediska 
+definice Fourierovy transformace nejnižší frekvence v rozích obrazu. Je zvykem
+pro názornější vizualizaci spektrum centrovat -- přesunout tak, aby nejnižší frekvence byly ve středu obrazu.
+Díky symetrii spektra jej lze rozdělit na 4 kvadranty a ty pak podél příslušné diagonály prohodit. Počátek
+funkce pak bude uprostřed obrazu.
 
--- centrovani spektra
 
 -- par obrazku spekter
 
@@ -225,8 +228,9 @@ zůstává stále převod do frekvenční oblasti a zpět.
 
 Výpočetní složitost konvoluce dvourozměrného signálu vzhledem k vzorci \ref{konvoluce} je 
 $\mathcal{O}(N^2 \cdot M^2)$, kde $N^2$ je velikost obrazu a $M^2$ je velikost konvolučního jádra. Je 
-tedy patrné, že časová složitost aplikace filtru ve frekvenční oblasti je výpočetně méně náročná oproti aplikaci 
-filtru v prostorové oblasti. 
+tedy patrné, že časová složitost aplikace filtru ve frekvenční oblasti spadá do nižší třídy složitosti 
+oproti aplikaci filtru v prostorové oblasti. Zároveň jsme ale schopni usoudit, že máme-li dostatečně
+malý obraz a filtr, reálná doba zpracování může být nižší pro výpočet pomocí konvoluce.
 
 \subsection{Využití}
 Fyzikální využití Franhouferovy difrakce je velmi široké, používá se například k analýze snímků z elektronového 
