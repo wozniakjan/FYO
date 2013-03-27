@@ -72,19 +72,19 @@ kteří publikovali výrazné zefektivnění výpočtu diskrétní transformace 
 transformace. Tento algoritmus je dodnes nejpoužívanější variantou výpočtu transformace.
 
 \section{Fyzikální princip}
-Fourierovská optika, popisuje šíření světla Fourierovou analýzou. Velmi zjednodušené vysvětlení by
+Fourierovská optika popisuje šíření světla pomocí Fourierovy analýzy. Velmi zjednodušené vysvětlení by
 se dalo definovat tak, že libovolnou vlnu ve volném prostoru je možně chápat jako superpozici rovinných 
 vln. To znamená, je-li libovolná monochromatická 
 vlna o vlnové délce $\lambda$ a komplexní amplitudě dané funkcí $f(x,y)$ složena z harmonických 
 složek, pak každá harmonická složka odpovídá rovinné vlně. Každá rovinná vlna se šíří pod úhly 
 $\theta x = sin^{-1}(\lambda v_x)$, $\theta y = sin^{-1}(\lambda v_y)$ a odpovídá složce s prostorovými 
 frekvencemi $v_x$, $v_y$  a její amplituda je $F(v_x, v_y)$ což je Fourierova transformace funkce
-$f(x,y)$.
+$f(x,y)$. 
 
-S využitím čočky, která zaostří rovinne vlny rovinne vlny sdružené s harmonickýmí Fourierovými komponentami
+S využitím čočky, která zaostří rovinné vlny sdružené s harmonickýmí Fourierovými komponentami
 vstupní funkce $f(x,y)$ do bodů $(\lambda v_x, \lambda v_y)$ v ohniskové rovině, můžeme jednotlivé
 komponenty světla zpracovávat individuálně. To znamená, že rozložení světla v zadní ohniskové 
-rovině čočky je úměrné Fourierově transformaci rozložení světla v přední ohniskové rovině.
+rovině čočky je úměrné Fourierově transformaci rozložení světla v přední ohniskové rovině \cite{dipl1}.
 
 Demonstraci Fourierovy transformace v optice je možné fyzikálně provést pomocí difrakce. Na základě
 Fresnelovy difrakce jsme teoreticky schopni dojít až k Fourierove transformaci. Tato difrakce je totiž
@@ -99,7 +99,7 @@ názorná jako Fresnelova difrakce. Poskytuje nám však informace o úhlovém r
 (rovina pozorování Fraunhoferovy difrakce je v nekonečnu a jednotlivým bodům roviny v nekonečnu odpovídají směry). 
 Vyjdeme-li z paprskové optiky, víme, že směrům v předmětovém prostoru odpovídají obrazové 
 body v ohniskové rovině čočky. Z toho tedy vyplývá, že můžeme Fraunhoferovu difrakci pozorovat, 
-vložíme-li za difraktující objekt čočku. Je ovšem třeba, aby na překážku dopadal rovnoběžný svazek světla.
+vložíme-li za difraktující objekt čočku. Je ovšem třeba, aby na překážku dopadal rovnoběžný svazek světla \cite{difrakce}.
 
 \begin{figure}[H]
 \centering
@@ -108,6 +108,8 @@ vložíme-li za difraktující objekt čočku. Je ovšem třeba, aby na překá�
 \label{Fraunhofer}
 \end{figure}
 
+V levé části obrázku je zobrazovaný objekt, pomocí čočky je dosaženo zaostření paprsků a v ohniskové
+rovině můžeme pozorovat obrazec Fourierovy transformace. Za Fourierovou rovinou se vytvoří obraz objektu. 
 Franhoferova difrakce hraje zásadní úlohu právě v zobrazovacích soustavách. Každá taková soustava
 se skládá ze dvou rovin
 
@@ -126,34 +128,43 @@ některých jeho částí) lze potom snadno ovlivnit výsledný sekundární obr
 velmi výrazně lišit od věrného obrazové předlohy -- objektu. 
 
 \subsection{Prostorový filtr}
-Slouží k odstranění vad zhoršující vnitřní strukturu svazku. Jde o difrakční a interferenční jevy,
+Ve své podstatě se jedná o optickou soustavu sestávající se ze dvou čoček se společným ohniskem.
+Do roviny ohniska je umístěn filtr, prakticky se jedná o clonku na určité části Fourierova obrazu.
+Svazek paprsků je zaostřen první čočkou, část je zacloněna filtrem, a druhou čočkou je opět přeměněn
+na rovnoběžný svazek paprsků \cite{prost-filt}.
+Filtr slouží k odstranění vad v obraze. Jde o difrakční a interferenční jevy,
 které zapříčiňují lokální změny intenzity svazku. Tyto jevy mohou vznikat na pevných
 částečkách ulpěných na povrchu optických prvků, bublinkách a mechanických poruchách ve skle
-atd. Poruchy v obraze způsobené popisovanými jevy jsou reprezentovány vysokými
-prostorovými frekvencemi (ve Fourierově rovině body vzdálenějšími od osy roviny). Užitím
-výše popsaného dolnopropustního filtru dojde k jejich potlačení.
-Velikosti dírkových clon (angl. pin hole) se pohybují v řádech desítek $\si{\micro} m$ a jejich nejvhodnější
+atd. Pro odstranění poruch způsobených těmito jevy lze použít filtr zvaný dolní propust. Ve frekvenční oblasti
+jej lze realizovat jako malý otvor uprostřed obrazce. 
+Velikosti dírkových clon se pohybují v řádech desítek $\si{\micro} m$ a jejich nejvhodnější
 kombinace s určitým objektivem resp. mikroobjektivem je dána víceméně experimentálně. Je-li
 clonka příliš malá, nelze se zbavit soustavy interferenčních proužků kolem stopy a je-li clonka
 příliš velká, bude filtrace neúčinná.
 
-Nyní uvažujme dvoučočkový zobrazovací systém zobrazený na obrazku \ref{obr1}. Ten se nazývá 
-systém 4-f, souží jako zaostřený zobrazovací systém. Je možné si ho představit jako kaskádu dvou
-subsystémů realizujících Fourierovu transformaci. Mezi předmětovou a Fourierovou rovinou je
-provedena přímá Fourierova transformace a mezi Fourierovou a obrazovou rovinou inverzní
-Fourierova transformace. Výsledkem zobrazení je obraz přesně korespondující s objektem.
+Na obrázku \ref{dft} je schéma, jak taková optická soustava může být realizována pomocí 4-f systému,
+což není nic jiného, než dvoučočkový zobrazovací systém. Skládá se ze tří podcelků:
+
+\begin{itemize}
+\item vstupní obrazec - čočka - Fourierova rovina
+\item clona (stínítko)
+\item Fourierova rovina - čočka - výstupní obrazec 
+\end{itemize}
+
+V první části dochází k rozkladu rovnoběžného svazku pomocí čočky, tento obraz je pomocí
+clony filtrován, neboť jednotlivé složky jsou oddělené a každému bodu odpovídá právě jedna příslušná
+prostorová frekvence. Filtrací jsme schopni selektivně ovlivnit, které frekvence propustíme a které
+budeme blokovat. V poslední třetí části docházi k inverzní transformaci kde výsledkem je
+odpovídajícím způsobem filtrovaný obraz. Kdyby do systému nebylo zahrnuto stínítko, výsledný
+obraz je totožný se vstuním obrazem.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=14cm]{images/ft-cocka.png}
-\caption{Prostorová filtrace.}
-\label{lcpstack}
+\includegraphics[width=14cm]{images/dft.png}
+\caption{Prostorová filtrace.} %\cite{lib-prost}.}
+\label{dft}
 \end{figure}
 
-Tento 4-f systém lze použít pro prostorovou filtraci, když si uvědomíme, že ve Fourierově rovině
-jsou oddělené jednotlivé Fourierovy složky a každému bodu tak odpovídá jedna příslušná
-prostorová frekvence. Použitím vhodné masky je možné selektivně ovlivnit jejich výběr –
-některé blokovat, jiné propustit.
 
 
 
@@ -161,7 +172,7 @@ některé blokovat, jiné propustit.
 
 \section{Matematické principy}
 Tento projekt se zabývá úpravami obrazu, a jak bylo řečeno v úvodu, obraz lze pochopit jako 2D diskrétní 
-signál, proto vztahy pro Fourierovu transformaci budou popsány rovněž z pohledu dvourozměrného signálu.
+signál, proto vztahy pro Fourierovu transformaci budou popsány rovněž z pohledu dvourozměrného signálu \cite{zre}.
 
 \begin{equation}
 F[k,l] = \sum_{m=0}^{N}{\sum_{n=0}^{N}{f[m,n]e^{(-i)\frac{2\pi km}{N}}\cdot e^{(-i)\frac{2\pi ln}{N}}}}
@@ -171,7 +182,7 @@ F[k,l] = \sum_{m=0}^{N}{\sum_{n=0}^{N}{f[m,n]e^{(-i)\frac{2\pi km}{N}}\cdot e^{(
 Kde $N$ jsou rozměry obrazu v pixelech, tedy $N^2$ dává celkový počet pixelů, a hodnoty $k$ a $l$ 
 jsou diskrétní pozice v obrazu. Fourierova transformace pracuje s hodnotami intenzit vstupního obrazu
 proto je nutné v případě barevného obrázku převézt z barevného modelu do hodnot odstínu šedé. Experimentálně
-stanovena byla pro převod z RGB modelu rovnice \ref{rgb}
+stanovena byla pro převod z RGB modelu rovnice~\ref{rgb}
 
 \begin{equation}
 Y = 0.299*R + 0.587*G + 0.114*B
@@ -199,15 +210,21 @@ pro názornější vizualizaci spektrum centrovat -- přesunout tak, aby nejniž
 Díky symetrii spektra jej lze rozdělit na 4 kvadranty a ty pak podél příslušné diagonály prohodit. Počátek
 funkce pak bude uprostřed obrazu.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{images/lena.png}
+\includegraphics[width=7cm]{images/lena_spec.png}
+\caption{Obraz a jeho centrované spektrum.}
+\label{spec}
+\end{figure}
 
--- par obrazku spekter
 
 \section{Aplikace}
 Mimo zpracování obrazu je Fourierova transformace používaná v mnoha dalších oblastech jako například
 řešení parciálních diferenciálních rovnic, rychlé násobení dvou velkých čísel. Výrazně lze pozorovat
 důležitost Fourierovy transformace na faktu, že v dnešní době velká řada moderních DSP procesorů obsahuje
 instrukce pro optimalizaci výpočtů rychlé Fourierovy transformace a zároveň existuje široké spektrum
-paralelních implementací, urychlujících tento výpočet pomocí SIMD instrukční sady na běžných CPU.
+paralelních implementací, urychlujících tento výpočet pomocí SIMD instrukční sady na běžných CPU \cite{xilinx}.
 
 \subsection{Analýza složitosti}
 Pro ideální využití Fourierovy transformace je vhodné znát i složitost výpočtu. Aby bylo  možné se
@@ -215,7 +232,7 @@ abstrahovat od konkrétní implementace či architektury stroje výpočet prová
 pokusím se provést analýzu pouze na základě asymptotického časového chování algoritmu, paměťové
 nároky nejsou vzhledem k charakteru výpočtu brány v úvahu.
 
-Ze vzorce \ref{dft} pro Fourierovu transformaci lze usoudit, že algoritmus ve dvou vnořených cyklech
+Ze vzorce~\ref{dft} pro Fourierovu transformaci lze usoudit, že algoritmus ve dvou vnořených cyklech
 násobí vektor $f[n,m]$ komplexní konstantou $e^{(-i)\frac{2\pi}{N}}$ umocněnou na $k\cdot m$ resp.
 $l\cdot n$, z čehož by vyplýval horní odhad asymptotické složitosti $\mathcal{O}(N^3)$. 
 Algoritmus výpočtu diskrétní Fourierovy transformace je možné výrazně urychlit metodou zvanou 
@@ -226,7 +243,7 @@ spadá do nižší třídy složitosti $\mathcal{O}(N^2 \cdot \log_{2}{N})$. Jel
 frekvenční doméně je realizovatelná s kvadratickou složitostí $\mathcal{O}(N^2)$, nejnáročnějším výpočtem
 zůstává stále převod do frekvenční oblasti a zpět.
 
-Výpočetní složitost konvoluce dvourozměrného signálu vzhledem k vzorci \ref{konvoluce} je 
+Výpočetní složitost konvoluce dvourozměrného signálu vzhledem k vzorci~\ref{konvoluce} je 
 $\mathcal{O}(N^2 \cdot M^2)$, kde $N^2$ je velikost obrazu a $M^2$ je velikost konvolučního jádra. Je 
 tedy patrné, že časová složitost aplikace filtru ve frekvenční oblasti spadá do nižší třídy složitosti 
 oproti aplikaci filtru v prostorové oblasti. Zároveň jsme ale schopni usoudit, že máme-li dostatečně
@@ -238,7 +255,7 @@ mikroskopu a snímků rozptylu částic (posouzení kvality zaostření, zjišt�
 \dots), ke kontinuální kontrole tloušťky vláken a drátů a ke korekci zobrazovaní v optických soustavách. 
 
 V oblasti počítačového vidění patří mezi jedny z nejpoužívanějších a nejrobustnějších obrazových příznaků 
-Gaborův filter, který se skládá z banky několika Gáborových vlnek o různé magnitudě a orientaci, kde všechny
+Gaborův filter \cite{gabor}, který se skládá z banky několika Gáborových vlnek o různé magnitudě a orientaci, kde všechny
 vlny lze generovat z bázové vlnky pomocí operací dilatace a rotace. Princip, jak tento filter funguje je velmi 
 podobný principu, jakým analyzuje obraz lidský mozek. Pro popis Gáborovy vlnky je třeba vysvětlit termín
 \textit{krátkodobá Fourierova transformace}, což je postupná aplikace Fourierovy transformace na krátké
@@ -249,12 +266,14 @@ krátkodobé Fourierovy transformace zvaný Gáborova vlnka.
 
 Příbuzné transformace nalezly praktického využití i přímo v populárních datových formátech jako například
 cosinova transformace, která tvoří základ pro kopresi obrazových dat ve formátu JPEG nebo diskrétní vlnková 
-transformace pro bezztrátový formát PNG.
+transformace pro bezztrátový formát PNG \cite{jpeg, png}.
 
 \section{Závěr}
-llorem ipsum \cite{pt}.
+Výsledkem tohoto projektu bylo seznámit se se základy Fourierovské optiky a vytvořit vhodnou demonstrační
+aplikaci na toto téma. Výstup aplikace je vidět i na obrázku \ref{spec}, je volně k dispozici včetně zdrojových
+kódů ve veřejném git repozitáři \url{https://github.com/wozniakjan/FYO.git}.
 
-
+\newpage
 
 \bibliography{literatura} % viz. literatura.bib
 \bibliographystyle{ieeetr}
