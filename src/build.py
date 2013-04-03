@@ -1,6 +1,6 @@
 from cx_Freeze import setup, Executable
 
-includes = ["sip","re","atexit","PyQt4.QtCore","PIL","numpy"]
+includes = ["sip","re","atexit","PyQt4.QtCore","PyQt4.QtGui","PIL","numpy"]
 
 exe = Executable(
     script = "main.py",

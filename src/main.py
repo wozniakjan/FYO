@@ -7,6 +7,23 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PIL import Image
 
+HIGH_PASS1 = 0
+HIGH_PASS2 = 1
+HIGH_PASS5 = 2
+HIGH_PASS10 = 3
+LOW_PASS10 = 4
+LOW_PASS20 = 5
+LOW_PASS30 = 6
+LOW_PASS40 = 7
+RECT10 = 8
+RECT20 = 9
+RECT30 = 10
+RECT40 = 11
+INV_RECT10 = 12
+INV_RECT20 = 13
+INV_RECT30 = 14
+INV_RECT40 = 15
+MAX = 16
 
 ################################################################################
 #                                                                              #
@@ -43,22 +60,54 @@ class Win(QMainWindow):
         exitAction.triggered.connect(qApp.quit)
 
         self.filterAction = []
-        self.filterAction.append(QAction('&High-Pass Filter', self))
-        self.filterAction[0].setCheckable(True)
-        self.filterAction[0].triggered.connect(self.setFilter)
-        self.filterAction.append(QAction('&Low-Pass Filter', self))
-        self.filterAction[1].setCheckable(True)
-        self.filterAction[1].triggered.connect(self.setFilter)
-        self.filterAction.append(QAction('&Custom Filter',self))
-        self.filterAction[2].setCheckable(True)
-        self.filterAction[2].triggered.connect(self.setFilter)
-
-        predefinedFilterMenu = QMenu('&Active', self)
-        predefinedFilterMenu.addAction(self.filterAction[0])
-        predefinedFilterMenu.addAction(self.filterAction[1])
-        predefinedFilterMenu.addAction(self.filterAction[2])
-        createFilterAction = QAction('&Create new', self)
-        createFilterAction.triggered.connect(self.addFilter)
+        self.filterAction.append(QAction('&High-Pass Filter r=1px', self))
+        self.filterAction[HIGH_PASS1].setCheckable(True)
+        self.filterAction[HIGH_PASS1].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&High-Pass Filter r=2px', self))
+        self.filterAction[HIGH_PASS2].setCheckable(True)
+        self.filterAction[HIGH_PASS2].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&High-Pass Filter r=5px', self))
+        self.filterAction[HIGH_PASS5].setCheckable(True)
+        self.filterAction[HIGH_PASS5].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&High-Pass Filter r=10px', self))
+        self.filterAction[HIGH_PASS10].setCheckable(True)
+        self.filterAction[HIGH_PASS10].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Low-Pass Filter r=10px', self))
+        self.filterAction[LOW_PASS10].setCheckable(True)
+        self.filterAction[LOW_PASS10].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Low-Pass Filter r=20px', self))
+        self.filterAction[LOW_PASS20].setCheckable(True)
+        self.filterAction[LOW_PASS20].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Low-Pass Filter r=40px', self))
+        self.filterAction[LOW_PASS30].setCheckable(True)
+        self.filterAction[LOW_PASS30].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Low-Pass Filter r=80px', self))
+        self.filterAction[LOW_PASS40].setCheckable(True)
+        self.filterAction[LOW_PASS40].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Rectangle Filter a=10px',self))
+        self.filterAction[RECT10].setCheckable(True)
+        self.filterAction[RECT10].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Rectangle Filter a=20px',self))
+        self.filterAction[RECT20].setCheckable(True)
+        self.filterAction[RECT20].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Rectangle Filter a=40px',self))
+        self.filterAction[RECT30].setCheckable(True)
+        self.filterAction[RECT30].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Rectangle Filter a=80px',self))
+        self.filterAction[RECT40].setCheckable(True)
+        self.filterAction[RECT40].triggered.connect(self.setFilter) 
+        self.filterAction.append(QAction('&Inverse Rectangle Filter a=10px',self))
+        self.filterAction[INV_RECT10].setCheckable(True)
+        self.filterAction[INV_RECT10].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Inverse Rectangle Filter a=20px',self))
+        self.filterAction[INV_RECT20].setCheckable(True)
+        self.filterAction[INV_RECT20].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Inverse Rectangle Filter a=40px',self))
+        self.filterAction[INV_RECT30].setCheckable(True)
+        self.filterAction[INV_RECT30].triggered.connect(self.setFilter)
+        self.filterAction.append(QAction('&Inverse Rectangle Filter a=80px',self))
+        self.filterAction[INV_RECT40].setCheckable(True)
+        self.filterAction[INV_RECT40].triggered.connect(self.setFilter)
 
         self.statusBar()
 
@@ -67,8 +116,8 @@ class Win(QMainWindow):
         fileMenu.addAction(openAction)
         fileMenu.addAction(exitAction)
         filterMenu = menubar.addMenu('&Filter')
-        filterMenu.addMenu(predefinedFilterMenu)
-        filterMenu.addAction(createFilterAction)
+        for i in range(HIGH_PASS1, MAX):
+            filterMenu.addAction(self.filterAction[i])
 
 
     def initPicArea(self):
@@ -106,11 +155,12 @@ class Win(QMainWindow):
         self.setCentralWidget(picsWidget)
 
     def showDialog(self):
-        fname = QFileDialog.getOpenFileName(self, 'Open file', '.')
+        fname = QFileDialog.getOpenFileName(self, 'Open file', './pictures/')
         if (fname):
             self.openPicture(fname)
 
     def openPicture(self, pic_file):
+        self.statusBar().showMessage('Opening picture')
         filters = len(self.filterAction)
         for i in range(0,filters):
             self.filterAction[i].setChecked(False)
@@ -134,6 +184,7 @@ class Win(QMainWindow):
         im_fft_view = abs(numpy.real(im_fft))
         x = im_fft_view[0].size
         y = int(im_fft_view.size/x)
+        print(x, y)
         for i in range(0,y):
             for j in range(0,x):
                 im_fft_view[i][j] /= q
@@ -142,24 +193,25 @@ class Win(QMainWindow):
         return im_fft_view
     
     def setFilter(self):
+        print("setFilter()")
+        self.statusBar().showMessage('Filtering picture')
         if self.im_fft != "null":
-#            filters = len(self.filterAction)
-#            text = "filters:"
-#            for i in range(0,filters):
-#                if self.filterAction[i].isChecked(): 
-#                    text += " " + self.filterAction[i].text()
-#                self.filter.setText(text) 
-            self.sumFilter()   
+            self.initSumfilter()
+            filters = len(self.filterAction)
+            for i in range(0,filters):
+                if self.filterAction[i].isChecked(): 
+                    self.sumFilter(i)    
             self.filterSpectrum()
+        self.statusBar().showMessage('')
             
     def filterSpectrum(self):
-        im_fft2 = self.im_fft
+        print("filterSpectrum()")
+        im_fft2 = self.im_fft.copy()
         x = self.im_fft[0].size
         y = int(self.im_fft.size/x)
         for i in range(0,y-1):
             for j in range(0,x-1):
-                im_fft2[i][j] = self.im_fft[i][j]*self.sumfilter[i][j]
-                
+                im_fft2[i][j] = self.im_fft[i][j]*self.sumfilter[i][j]                
         im_fft2_view = self.count_fft_view(im_fft2, 100)
         im_ifft = numpy.fft.ifft2(numpy.fft.ifftshift(im_fft2))
         Image.fromarray(numpy.uint8(im_fft2_view)).save("img/fft2_temp.png")
@@ -172,24 +224,84 @@ class Win(QMainWindow):
         self.dst.setFixedSize(self.pic_s,self.pic_s)
         self.viewFilter()
 
-        
-    def sumFilter(self):
+    def initSumfilter(self):
+        print("initSumfilter()")
         x = self.im_fft[0].size
         y = int(self.im_fft.size/x)
-        self.sumfilter = numpy.ndarray(shape=(x,y), dtype=float)
-        mid_x = x/2
-        mid_y = y/2
-        s = 10
+        self.sumfilter = numpy.ndarray(shape=(y,x), dtype=float)
         for i in range(0,y):
             for j in range(0,x):
                 self.sumfilter[i][j] = 1
-                if (i>(mid_y-s))&(i<(mid_y+s))&(j>(mid_x-s))&(j<(mid_x+s)):
-                    self.sumfilter[i][j] = 0    
     
-    def viewFilter(self):
+    def dist(self, x1, y1, x2, y2):
+        dx = x1-x2
+        dy = y1-y2
+        return numpy.sqrt((dx*dx)+(dy*dy))
+        
+    def sumFilter(self, i):
+        print("sumFilter()")
         x = self.im_fft[0].size
         y = int(self.im_fft.size/x)
-        sumfilter_pic2 = numpy.ndarray(shape=(x,y), dtype=float)
+        mid_x = x/2
+        mid_y = y/2
+        
+        if (i >= INV_RECT10) & (i<=INV_RECT40):
+            s = 10
+            if i == INV_RECT10:
+                s = 10
+            if i == INV_RECT20:
+                s = 20
+            if i == INV_RECT30:
+                s = 40
+            if i == INV_RECT40:
+                s = 80
+            for i in range(0,y):
+                for j in range(0,x):
+                    if not (i>(mid_y-s))&(i<(mid_y+s))&(j>(mid_x-s))&(j<(mid_x+s)):
+                        self.sumfilter[i][j] = 0
+        
+        if (i >= RECT10) & (i<=RECT40):
+            s = 10
+            if i == RECT10:
+                s = 10
+            if i == RECT20:
+                s = 20
+            if i == RECT30:
+                s = 40
+            if i == RECT40:
+                s = 80
+            for i in range(0,y):
+                for j in range(0,x):
+                    if (i>(mid_y-s))&(i<(mid_y+s))&(j>(mid_x-s))&(j<(mid_x+s)):
+                        self.sumfilter[i][j] = 0
+        
+        if (i >= HIGH_PASS1) & (i<=HIGH_PASS10):
+            r = i+1
+            for i in range(0,y):
+                for j in range(0,x):
+                    if (self.dist(j,i,mid_x,mid_y) < r):
+                        self.sumfilter[i][j] = 0
+        
+        if (i >= LOW_PASS10) & (i<=LOW_PASS40):
+            r = i
+            if i == LOW_PASS10:
+                r = 10
+            if i == LOW_PASS20:
+                r = 20
+            if i == LOW_PASS30:
+                r = 40
+            if i == LOW_PASS40:
+                r = 80
+            for i in range(0,y):
+                for j in range(0,x):
+                    if (self.dist(j,i,mid_x,mid_y) > r):
+                        self.sumfilter[i][j] = 0   
+    
+    def viewFilter(self):
+        print("viewFilter()")
+        x = self.im_fft[0].size
+        y = int(self.im_fft.size/x)
+        sumfilter_pic2 = numpy.ndarray(shape=(y,x), dtype=float)
         mid_x = x/2
         mid_y = y/2
         s = 10
@@ -200,13 +312,6 @@ class Win(QMainWindow):
         sumfiltr_pic = QPixmap('img/sumfiltr.png')
         self.filter.setPixmap(sumfiltr_pic.scaled(self.pic_s, self.pic_s))
         self.filter.setFixedSize(self.pic_s,self.pic_s)    
-
-    def addFilter(self):
-        print ("add filter")
-
-
-    def removeFilter(self):
-        print ("remove filter")
 
 
 ################################################################################
